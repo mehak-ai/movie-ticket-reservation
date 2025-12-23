@@ -3,7 +3,6 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 const api = {
-  // Movies
   getMovies: async () => {
     const response = await axios.get(`${API_URL}/movies`);
     return response.data;
@@ -14,19 +13,16 @@ const api = {
     return response.data;
   },
 
-  // Showtimes
   getShowtimes: async (movieId) => {
     const response = await axios.get(`${API_URL}/movies/${movieId}/showtimes`);
     return response.data;
   },
 
-// Seats
 getBookedSeats: async (showtimeId) => {
     const response = await axios.get(`${API_URL}/showtimes/${showtimeId}/booked-seats`);
     return response.data;
 },
 
-// Bookings
 createBooking: async (bookingData) => {
     try {
         const response = await axios.post(`${API_URL}/bookings`, bookingData);
