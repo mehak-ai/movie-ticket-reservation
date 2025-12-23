@@ -138,7 +138,6 @@ const App = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Film className="w-10 h-10" />
@@ -147,17 +146,14 @@ const App = () => {
           <p className="text-indigo-200">Your Premium Movie Ticket Reservation System</p>
         </div>
 
-        {/* Progress Indicator */}
         <ProgressIndicator currentStep={step} />
 
-        {/* Error Display */}
         {error && (
           <div className="bg-red-500/20 border border-red-500 rounded-lg p-4 mb-6">
             {error}
           </div>
         )}
 
-        {/* Step Components */}
         {step === 1 && (
           <MovieSelection 
             movies={movies} 
