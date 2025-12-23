@@ -1,7 +1,6 @@
 const pool = require('../config/database');
 
 class Movie {
-  // Get all movies
   static async findAll() {
     try {
       const [rows] = await pool.query(
@@ -13,7 +12,6 @@ class Movie {
     }
   }
 
-  // Get movie by ID
   static async findById(id) {
     try {
       const [rows] = await pool.query(
@@ -26,7 +24,6 @@ class Movie {
     }
   }
 
-  // Create new movie
   static async create(movieData) {
     const { title, genre, duration, rating, poster, description } = movieData;
     
@@ -46,7 +43,6 @@ class Movie {
     }
   }
 
-  // Update movie
   static async update(id, movieData) {
     const { title, genre, duration, rating, poster, description } = movieData;
     
@@ -68,7 +64,6 @@ class Movie {
     }
   }
 
-  // Delete movie
   static async delete(id) {
     try {
       const [result] = await pool.query(
@@ -82,7 +77,6 @@ class Movie {
     }
   }
 
-  // Get movies with showtimes
   static async findAllWithShowtimes() {
     try {
       const movies = await this.findAll();
@@ -103,7 +97,6 @@ class Movie {
     }
   }
 
-  // Search movies by title or genre
   static async search(searchTerm) {
     try {
       const [rows] = await pool.query(
@@ -118,7 +111,6 @@ class Movie {
     }
   }
 
-  // Get movies by genre
   static async findByGenre(genre) {
     try {
       const [rows] = await pool.query(
@@ -131,7 +123,6 @@ class Movie {
     }
   }
 
-  // Get movies by rating
   static async findByRating(rating) {
     try {
       const [rows] = await pool.query(
