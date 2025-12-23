@@ -4,7 +4,6 @@ exports.getAllMovies = async (req, res, next) => {
   try {
     const [movies] = await pool.query('SELECT * FROM movies ORDER BY title');
     
-    // Get showtimes for each movie
     for (let movie of movies) {
       const [showtimes] = await pool.query(
         'SELECT * FROM showtimes WHERE movie_id = ? ORDER BY show_date, show_time',
