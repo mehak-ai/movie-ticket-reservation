@@ -9,7 +9,7 @@
     "setup-db": "node database/setup.js"
   },
   "keywords": ["movie", "ticket", "booking", "reservation"],
-  "author": "Your Name",
+  "author": "Rahul Kumar",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
