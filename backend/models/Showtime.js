@@ -1,7 +1,6 @@
 const pool = require('../config/database');
 
 class Showtime {
-  // Get all showtimes
   static async findAll() {
     try {
       const [rows] = await pool.query(
@@ -16,7 +15,6 @@ class Showtime {
     }
   }
 
-  // Get showtime by ID
   static async findById(id) {
     try {
       const [rows] = await pool.query(
@@ -32,7 +30,6 @@ class Showtime {
     }
   }
 
-  // Get showtimes by movie ID
   static async findByMovieId(movieId) {
     try {
       const [rows] = await pool.query(
@@ -47,7 +44,6 @@ class Showtime {
     }
   }
 
-  // Get showtimes by date
   static async findByDate(date) {
     try {
       const [rows] = await pool.query(
@@ -64,7 +60,6 @@ class Showtime {
     }
   }
 
-  // Create new showtime
   static async create(showtimeData) {
     const { movie_id, show_date, show_time, available_seats = 80 } = showtimeData;
     
@@ -84,7 +79,6 @@ class Showtime {
     }
   }
 
-  // Update showtime
   static async update(id, showtimeData) {
     const { movie_id, show_date, show_time, available_seats } = showtimeData;
     
@@ -106,7 +100,6 @@ class Showtime {
     }
   }
 
-  // Delete showtime
   static async delete(id) {
     try {
       const [result] = await pool.query(
@@ -120,7 +113,6 @@ class Showtime {
     }
   }
 
-  // Get booked seats for a showtime
   static async getBookedSeats(showtimeId) {
     try {
       const [rows] = await pool.query(
@@ -137,7 +129,6 @@ class Showtime {
     }
   }
 
-  // Update available seats (with transaction lock)
   static async updateAvailableSeats(connection, showtimeId, seatsToDeduct) {
     try {
       const [result] = await connection.query(
@@ -157,7 +148,6 @@ class Showtime {
     }
   }
 
-  // Restore available seats (for cancellations)
   static async restoreAvailableSeats(connection, showtimeId, seatsToRestore) {
     try {
       await connection.query(
@@ -173,7 +163,6 @@ class Showtime {
     }
   }
 
-  // Get available showtimes (with available seats > 0)
   static async findAvailable() {
     try {
       const [rows] = await pool.query(
@@ -190,7 +179,6 @@ class Showtime {
     }
   }
 
-  // Get showtimes for today
   static async findToday() {
     try {
       const [rows] = await pool.query(
@@ -206,7 +194,6 @@ class Showtime {
     }
   }
 
-  // Get upcoming showtimes
   static async findUpcoming(days = 7) {
     try {
       const [rows] = await pool.query(
@@ -223,7 +210,6 @@ class Showtime {
     }
   }
 
-  // Check if showtime is fully booked
   static async isFullyBooked(showtimeId) {
     try {
       const [rows] = await pool.query(
