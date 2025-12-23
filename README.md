@@ -102,7 +102,7 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-Your Name - your.email@example.com
+Rahul Kumar - kumarrahul123098@gmail.com
 
 Project Link: [https://github.com/yourusername/movie-ticket-reservation](https://github.com/yourusername/movie-ticket-reservation)
 ```
