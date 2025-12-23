@@ -1,7 +1,6 @@
 const pool = require('../config/database');
 
 class Booking {
-  // Get all bookings
   static async findAll() {
     try {
       const [rows] = await pool.query(
@@ -17,7 +16,6 @@ class Booking {
     }
   }
 
-  // Get booking by ID
   static async findById(id) {
     try {
       const [rows] = await pool.query(
@@ -34,7 +32,6 @@ class Booking {
     }
   }
 
-  // Get booking by reference
   static async findByReference(reference) {
     try {
       const [rows] = await pool.query(
@@ -51,7 +48,6 @@ class Booking {
     }
   }
 
-  // Get bookings by email
   static async findByEmail(email) {
     try {
       const [rows] = await pool.query(
@@ -69,7 +65,6 @@ class Booking {
     }
   }
 
-  // Get bookings by showtime
   static async findByShowtime(showtimeId) {
     try {
       const [rows] = await pool.query(
@@ -84,7 +79,6 @@ class Booking {
     }
   }
 
-  // Create new booking with transaction
   static async create(bookingData) {
     const { showtime_id, customer_name, customer_email, customer_phone, seats, total_amount } = bookingData;
     const connection = await pool.getConnection();
@@ -92,7 +86,6 @@ class Booking {
     try {
       await connection.beginTransaction();
       
-      // Lock the showtime row
       const [showtimeRows] = await connection.query(
         'SELECT available_seats FROM showtimes WHERE id = ? FOR UPDATE',
         [showtime_id]
@@ -108,7 +101,6 @@ class Booking {
         throw new Error(`Only ${availableSeats} seats available`);
       }
       
-      // Get currently booked seats
       const [bookedSeatsRows] = await connection.query(
         `SELECT s.seat_number 
          FROM seats s 
@@ -125,10 +117,8 @@ class Booking {
         throw new Error(`Seats already booked: ${conflictingSeats.join(', ')}`);
       }
       
-      // Generate booking reference
       const booking_reference = 'BK' + Date.now() + Math.floor(Math.random() * 1000);
       
-      // Insert booking
       const [bookingResult] = await connection.query(
         `INSERT INTO bookings 
          (showtime_id, customer_name, customer_email, customer_phone, seats, total_amount, booking_reference) 
@@ -138,14 +128,12 @@ class Booking {
       
       const bookingId = bookingResult.insertId;
       
-      // Insert seats
       const seatValues = seats.map(seat => [bookingId, seat]);
       await connection.query(
         'INSERT INTO seats (booking_id, seat_number) VALUES ?',
         [seatValues]
       );
       
-      // Update available seats
       await connection.query(
         'UPDATE showtimes SET available_seats = available_seats - ? WHERE id = ?',
         [seats.length, showtime_id]
@@ -167,14 +155,12 @@ class Booking {
     }
   }
 
-  // Cancel booking
   static async cancel(reference) {
     const connection = await pool.getConnection();
     
     try {
       await connection.beginTransaction();
       
-      // Lock and get booking
       const [bookingRows] = await connection.query(
         'SELECT * FROM bookings WHERE booking_reference = ? FOR UPDATE',
         [reference]
@@ -192,13 +178,11 @@ class Booking {
       
       const seats = JSON.parse(booking.seats);
       
-      // Update booking status
       await connection.query(
         'UPDATE bookings SET status = ? WHERE id = ?',
         ['cancelled', booking.id]
       );
       
-      // Restore available seats
       await connection.query(
         'UPDATE showtimes SET available_seats = available_seats + ? WHERE id = ?',
         [seats.length, booking.showtime_id]
@@ -216,7 +200,6 @@ class Booking {
     }
   }
 
-  // Get booking statistics
   static async getStatistics() {
     try {
       const [stats] = await pool.query(
@@ -235,7 +218,6 @@ class Booking {
     }
   }
 
-  // Get recent bookings
   static async findRecent(limit = 10) {
     try {
       const [rows] = await pool.query(
@@ -254,7 +236,6 @@ class Booking {
     }
   }
 
-  // Get seats for a booking
   static async getSeats(bookingId) {
     try {
       const [rows] = await pool.query(
@@ -268,7 +249,6 @@ class Booking {
     }
   }
 
-  // Check if booking exists
   static async exists(reference) {
     try {
       const [rows] = await pool.query(
