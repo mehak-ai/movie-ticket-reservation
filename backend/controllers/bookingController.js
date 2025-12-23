@@ -8,7 +8,6 @@ exports.createBooking = async (req, res, next) => {
   try {
     await connection.beginTransaction();
     
-    // Lock the showtime row
     const [showtimeRows] = await connection.query(
       'SELECT available_seats FROM showtimes WHERE id = ? FOR UPDATE',
       [showtime_id]
@@ -24,7 +23,6 @@ exports.createBooking = async (req, res, next) => {
       throw new Error(`Only ${availableSeats} seats available`);
     }
     
-    // Get currently booked seats
     const [bookedSeatsRows] = await connection.query(`
       SELECT s.seat_number 
       FROM seats s 
@@ -40,10 +38,8 @@ exports.createBooking = async (req, res, next) => {
       throw new Error(`Seats already booked: ${conflictingSeats.join(', ')}`);
     }
     
-    // Generate booking reference
     const booking_reference = 'BK' + Date.now() + Math.floor(Math.random() * 1000);
     
-    // Insert booking
     const [bookingResult] = await connection.query(`
       INSERT INTO bookings 
       (showtime_id, customer_name, customer_email, customer_phone, seats, total_amount, booking_reference) 
@@ -52,14 +48,12 @@ exports.createBooking = async (req, res, next) => {
     
     const bookingId = bookingResult.insertId;
     
-    // Insert seats
     const seatValues = seats.map(seat => [bookingId, seat]);
     await connection.query(
       'INSERT INTO seats (booking_id, seat_number) VALUES ?',
       [seatValues]
     );
     
-    // Update available seats
     await connection.query(
       'UPDATE showtimes SET available_seats = available_seats - ? WHERE id = ?',
       [seats.length, showtime_id]
