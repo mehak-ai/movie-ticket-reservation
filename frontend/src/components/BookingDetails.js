@@ -20,7 +20,6 @@ const BookingDetails = ({
       <h2 className="text-2xl font-bold mb-6">Enter Your Details</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Booking Summary */}
         <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6">
           <h3 className="font-bold mb-4">Booking Summary</h3>
           <div className="space-y-3 text-sm">
@@ -47,7 +46,6 @@ const BookingDetails = ({
           </div>
         </div>
 
-        {/* Customer Details Form */}
         <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6">
           <div className="space-y-4">
             <div>
